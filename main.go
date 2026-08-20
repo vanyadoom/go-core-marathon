@@ -3,8 +3,10 @@ package main
 import "fmt"
 
 func main() {
-	totalBill := 4550.75
-	friends := float64(4)
-	share := totalBill / friends
-	fmt.Printf("Каждый должен будет заплатить: %.2f", share)
+	age := 16
+	height := 155
+	hasCard := false
+	passesSafety := (age >= 14) && (height >= 155)
+	canRide := passesSafety || hasCard
+	fmt.Println("Допуск на аттракцион разрешен: ", canRide)
 }
