@@ -3,16 +3,8 @@ package main
 import "fmt"
 
 func main() {
-	pizzas := 5
-	slicesPizza := 8
-	totalSlices := pizzas * slicesPizza
-	programmers := 6
-
-	OnePieceOneProg := totalSlices / programmers
-
-	fmt.Println("Каждому программисту достанется: ", OnePieceOneProg)
-
-	ostatok := totalSlices % OnePieceOneProg
-
-	fmt.Println("После того, как все покушают, в коробке останется: ", ostatok)
+	totalBill := 4550.75
+	friends := float64(4)
+	share := totalBill / friends
+	fmt.Printf("Каждый должен будет заплатить: %.2f", share)
 }
