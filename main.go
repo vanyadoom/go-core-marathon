@@ -3,22 +3,15 @@ package main
 import "fmt"
 
 func main() {
-	a := 5.0
-	b := 5.0
-	c := 8.0
+	totalSum := 0
 
-	if a+b > c && a+c > b && b+c > a {
+	for i := 1; i <= 10; i++ {
+		if i%2 == 0 {
+			totalSum += i
 
-		if a == b && b == c {
-			fmt.Println("Тип: Равносторонний треугольник")
-		} else if a == b || b == c || a == c {
-			fmt.Println("Тип: Равнобедренный треугольник")
-		} else {
-			fmt.Println("Тип: Разносторонний треугольник")
 		}
-
-	} else {
-
-		fmt.Println("Ошибка: Треугольник с такими сторонами не существует!")
 	}
+
+	fmt.Println("Сумма четных чисел от 1 до 10 равна: ", totalSum)
+
 }
