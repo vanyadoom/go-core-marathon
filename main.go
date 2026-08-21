@@ -3,24 +3,22 @@ package main
 import "fmt"
 
 func main() {
+	a := 5.0
+	b := 5.0
+	c := 8.0
 
-	salary := 120000.50
-	taxRate := 0.0
+	if a+b > c && a+c > b && b+c > a {
 
-	if salary <= 50000.0 {
-		taxRate = 0.0
-	} else if salary <= 150000.0 {
-		taxRate = 0.13
+		if a == b && b == c {
+			fmt.Println("Тип: Равносторонний треугольник")
+		} else if a == b || b == c || a == c {
+			fmt.Println("Тип: Равнобедренный треугольник")
+		} else {
+			fmt.Println("Тип: Разносторонний треугольник")
+		}
+
 	} else {
-		taxRate = 0.15
+
+		fmt.Println("Ошибка: Треугольник с такими сторонами не существует!")
 	}
-
-	taxAmount := salary * taxRate
-
-	netIncome := salary - taxAmount
-
-	fmt.Printf("Грязная зарплата: %.2f .", salary)
-	fmt.Printf("Сумма налога: %.2f .", taxAmount)
-	fmt.Printf("Чистый доход: %.2f .", netIncome)
-
 }
