@@ -3,15 +3,16 @@ package main
 import "fmt"
 
 func main() {
-	totalSum := 0
+	for i := 1; i <= 4; i++ {
+		for j := 1; j <= 4; j++ {
+			if i == 3 || j == 3 {
+				continue
 
-	for i := 1; i <= 10; i++ {
-		if i%2 == 0 {
-			totalSum += i
-
+			}
+			fmt.Printf("%d x %d = %d\t", i, j, i*j)
+		}
+		if i != 3 {
+			fmt.Println()
 		}
 	}
-
-	fmt.Println("Сумма четных чисел от 1 до 10 равна: ", totalSum)
-
 }
