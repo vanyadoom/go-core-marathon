@@ -4,21 +4,23 @@ import "fmt"
 
 func main() {
 
-	q1 := 3.5
-	q2 := 4.2
-	q3 := 3.8
+	salary := 120000.50
+	taxRate := 0.0
 
-	average := (q1 + q2 + q3) / 3.0
-
-	fmt.Printf("Средний балл: %.1f\n", average)
-
-	if average >= 4.0 {
-
-		fmt.Println("Результат: Отлично! Допуск к экзамену получен автоматические.")
-
+	if salary <= 50000.0 {
+		taxRate = 0.0
+	} else if salary <= 150000.0 {
+		taxRate = 0.13
 	} else {
-
-		fmt.Println("Результат: Внимание! Средний балл ниже 4.0. Требуется сдача зачета для допуска.")
-
+		taxRate = 0.15
 	}
+
+	taxAmount := salary * taxRate
+
+	netIncome := salary - taxAmount
+
+	fmt.Printf("Грязная зарплата: %.2f .", salary)
+	fmt.Printf("Сумма налога: %.2f .", taxAmount)
+	fmt.Printf("Чистый доход: %.2f .", netIncome)
+
 }
