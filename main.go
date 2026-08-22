@@ -2,26 +2,15 @@ package main
 
 import "fmt"
 
-func ApplyDiscount(amount, discount float64) (float64, bool) {
-	if discount < 0 || discount > 100.0 {
-		return amount, false
-	}
-	finalPrice := amount - (amount * (discount / 100.0))
-	return finalPrice, true
-}
-
 func main() {
-	price1, ok1 := ApplyDiscount(5000.0, 15.0)
-	price2, ok2 := ApplyDiscount(2500.0, 120.0)
+	rates := [5]float64{10.5, 45.2, 89.1, 23.7, 56.4}
 
-	if ok1 {
-		fmt.Printf("Покупка 1. Купон успешно применен! Финальная цена: %.2f\n", price1)
-	} else {
-		fmt.Printf("Покупка 1. Ошибка: Неверный процент скидки! Цена без изменений: %.2f\n", price1)
+	maxRate := rates[0]
+
+	for i := 1; i < 5; i++ {
+		if rates[i] > maxRate {
+			maxRate = rates[i]
+		}
 	}
-	if ok2 {
-		fmt.Printf("Покупка 2. Купон успешно применен! Финальная цена: %.2f\n", price2)
-	} else {
-		fmt.Printf("Покупка 2. Ошибка: Неверный процент скидки! Цена без изменений: %.2f\n", price2)
-	}
+	fmt.Printf("%.1f\n", maxRate)
 }
