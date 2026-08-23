@@ -3,14 +3,16 @@ package main
 import "fmt"
 
 func main() {
-	rates := [5]float64{10.5, 45.2, 89.1, 23.7, 56.4}
+	var cart []float64
 
-	maxRate := rates[0]
+	cart = append(cart, 150.50, 300.00, 450.25)
 
-	for i := 1; i < 5; i++ {
-		if rates[i] > maxRate {
-			maxRate = rates[i]
-		}
+	totalPrice := 0.0
+
+	for i := 0; i < len(cart); i++ {
+		totalPrice += cart[i]
 	}
-	fmt.Printf("%.1f\n", maxRate)
+
+	fmt.Printf("Итоговая сумма корзины: %.2f\n", totalPrice)
+
 }
