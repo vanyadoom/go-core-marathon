@@ -3,16 +3,16 @@ package main
 import "fmt"
 
 func main() {
-	var cart []float64
 
-	cart = append(cart, 150.50, 300.00, 450.25)
+	transactions := []float64{50.0, 1200.50, 300.0, 4500.0, 80.25}
 
-	totalPrice := 0.0
+	whaleSum := 0.0
 
-	for i := 0; i < len(cart); i++ {
-		totalPrice += cart[i]
+	for _, amount := range transactions {
+		if amount > 500.0 {
+			whaleSum += amount
+		}
 	}
 
-	fmt.Printf("Итоговая сумма корзины: %.2f\n", totalPrice)
-
+	fmt.Printf("Китовые транзакции: %.2f\n", whaleSum)
 }
