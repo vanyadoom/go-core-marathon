@@ -4,13 +4,18 @@ import "fmt"
 
 func main() {
 
-	balances := []float64{100.0, 520.50, 50.0, 1000.0}
+	portfolio := [][]string{
 
-	for index := range balances {
-		balances[index] *= 1.5
+		{"Bitcoin", "2.5"},
+		{"Ethereum", "10.0"},
+		{"Solana", "150.75"},
 	}
 
-	for _, val := range balances {
-		fmt.Printf("Новый баланс: %.2f\n", val)
+	for _, row := range portfolio {
+		for _, cell := range row {
+			fmt.Printf("%-12s", cell)
+		}
+		fmt.Println()
 	}
+
 }
