@@ -4,15 +4,13 @@ import "fmt"
 
 func main() {
 
-	transactions := []float64{50.0, 1200.50, 300.0, 4500.0, 80.25}
+	balances := []float64{100.0, 520.50, 50.0, 1000.0}
 
-	whaleSum := 0.0
-
-	for _, amount := range transactions {
-		if amount > 500.0 {
-			whaleSum += amount
-		}
+	for index := range balances {
+		balances[index] *= 1.5
 	}
 
-	fmt.Printf("Китовые транзакции: %.2f\n", whaleSum)
+	for _, val := range balances {
+		fmt.Printf("Новый баланс: %.2f\n", val)
+	}
 }
