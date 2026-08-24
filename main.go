@@ -4,19 +4,19 @@ import "fmt"
 
 func main() {
 
-	balances := make(map[string]float64)
+	assets := make(map[string]float64)
 
-	balances["USD"] = 500.0
+	assets["BTC"] = 0.5
+	assets["DOGE"] = 999.9
 
-	amount, ok := balances["EUR"]
+	delete(assets, "DOGE")
+
+	_, ok := assets["DOGE"]
 
 	if ok {
-
-		fmt.Printf("Кошелёк найден! Баланс: %.2f\n", amount)
-
+		fmt.Printf("Валюта DOGE до сих пор в портфеле!")
 	} else {
-
-		fmt.Printf("Ошибка: Запрошенный валютный кошелек не существует!")
+		fmt.Printf("Успех: Валюта DOGE полностью удалена из портфеля!")
 	}
 
 }
