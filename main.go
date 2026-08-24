@@ -4,14 +4,19 @@ import "fmt"
 
 func main() {
 
-	cryptoWallet := make(map[string]float64)
+	balances := make(map[string]float64)
 
-	cryptoWallet["BTC"] = 0.45
-	cryptoWallet["ETH"] = 3.20
-	cryptoWallet["SOL"] = 45.75
+	balances["USD"] = 500.0
 
-	cryptoWallet["ETH"] += 1.5
+	amount, ok := balances["EUR"]
 
-	fmt.Printf("Баланс ETH: %.2f\n", cryptoWallet["ETH"])
+	if ok {
+
+		fmt.Printf("Кошелёк найден! Баланс: %.2f\n", amount)
+
+	} else {
+
+		fmt.Printf("Ошибка: Запрошенный валютный кошелек не существует!")
+	}
 
 }
