@@ -4,20 +4,24 @@ import (
 	"fmt"
 )
 
+type Asset struct {
+	Ticker   string
+	ValueUSD float64
+}
+
 func main() {
 
-	investments := make(map[string]float64)
+	portfolio := []Asset{
+		{Ticker: "BTC", ValueUSD: 1200.50},
+		{Ticker: "ETH", ValueUSD: 450.00},
+		{Ticker: "SOL", ValueUSD: 150.25},
+	}
+	totalPortfolioSum := 0.0
 
-	investments["Иван"] = 450.50
-	investments["Алексей"] = 1200.00
-	investments["Ольга"] = 350.25
-
-	totalCapital := 0.0
-
-	for _, balance := range investments {
-		totalCapital += balance
+	for _, item := range portfolio {
+		totalPortfolioSum += item.ValueUSD
 	}
 
-	fmt.Printf(" Итоговый капитал: %.2f\n", totalCapital)
+	fmt.Printf("Стоимость портфеля: %.2f\n", totalPortfolioSum)
 
 }
