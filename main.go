@@ -4,18 +4,14 @@ import "fmt"
 
 func main() {
 
-	portfolio := [][]string{
+	cryptoWallet := make(map[string]float64)
 
-		{"Bitcoin", "2.5"},
-		{"Ethereum", "10.0"},
-		{"Solana", "150.75"},
-	}
+	cryptoWallet["BTC"] = 0.45
+	cryptoWallet["ETH"] = 3.20
+	cryptoWallet["SOL"] = 45.75
 
-	for _, row := range portfolio {
-		for _, cell := range row {
-			fmt.Printf("%-12s", cell)
-		}
-		fmt.Println()
-	}
+	cryptoWallet["ETH"] += 1.5
+
+	fmt.Printf("Баланс ETH: %.2f\n", cryptoWallet["ETH"])
 
 }
