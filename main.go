@@ -1,22 +1,23 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 
-	assets := make(map[string]float64)
+	investments := make(map[string]float64)
 
-	assets["BTC"] = 0.5
-	assets["DOGE"] = 999.9
+	investments["Иван"] = 450.50
+	investments["Алексей"] = 1200.00
+	investments["Ольга"] = 350.25
 
-	delete(assets, "DOGE")
+	totalCapital := 0.0
 
-	_, ok := assets["DOGE"]
-
-	if ok {
-		fmt.Printf("Валюта DOGE до сих пор в портфеле!")
-	} else {
-		fmt.Printf("Успех: Валюта DOGE полностью удалена из портфеля!")
+	for _, balance := range investments {
+		totalCapital += balance
 	}
+
+	fmt.Printf(" Итоговый капитал: %.2f\n", totalCapital)
 
 }
