@@ -1,19 +1,25 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
-type User struct {
-	Name  string
-	Coins int
+type Wallet struct {
+	Owner   string
+	Balance float64
 }
 
-func (u User) Showprofile() {
-	fmt.Printf("Пользователь: %s, Баланс: %d BTC\n", u.Name, u.Coins)
+func (w *Wallet) Deposit(amount float64) {
+	w.Balance += amount
 }
 
 func main() {
-	vanya := User{Name: "Ваня", Coins: 3}
-	vanya.Showprofile()
+	myWallet := Wallet{
+		Owner:   "Ваня",
+		Balance: 100.50,
+	}
+
+	fmt.Printf("Стартовый баланс: %.2f\n", myWallet.Balance)
+
+	myWallet.Deposit(50.25)
+
+	fmt.Printf("Финальный баланс: %.2f\n", myWallet.Balance)
 }
