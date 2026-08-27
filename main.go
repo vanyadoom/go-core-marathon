@@ -4,14 +4,18 @@ import "fmt"
 
 func main() {
 
-	var box any = 40
+	var box any = "Solana"
 
-	value, ok := box.(int)
+	switch v := box.(type) {
 
-	if ok == true {
-		result := value + 10
-		fmt.Println("Успешная распаковка! Результат + 10 =", result)
-	} else {
-		fmt.Println("Ошибка: внутри коробки лежит не целое число!")
+	case int:
+		fmt.Printf("Это целое число: %d\n", v)
+
+	case string:
+		fmt.Printf("Это текстовая строка: %s\n", v)
+
+	default:
+		fmt.Println("Неизвестный тип данных")
+
 	}
 }
