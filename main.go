@@ -1,21 +1,25 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
+
+func Withdraw(amount float64) (string, error) {
+
+	if amount <= 0.0 {
+		return "", errors.New("сумма должна быть больше нуля")
+	} else {
+		return "Успешный вывод средств!", nil
+	}
+}
 
 func main() {
+	msg, err := Withdraw(-50.0)
 
-	var box any = "Solana"
-
-	switch v := box.(type) {
-
-	case int:
-		fmt.Printf("Это целое число: %d\n", v)
-
-	case string:
-		fmt.Printf("Это текстовая строка: %s\n", v)
-
-	default:
-		fmt.Println("Неизвестный тип данных")
-
+	if err != nil {
+		fmt.Println("Ошибка безопасности:", err)
+	} else {
+		fmt.Println(msg)
 	}
 }
