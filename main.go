@@ -4,11 +4,14 @@ import "fmt"
 
 func main() {
 
-	storage := []any{"Etherium", 2026, 3.14}
+	var box any = 40
 
-	for _, data := range storage {
+	value, ok := box.(int)
 
-		fmt.Println(data)
-
+	if ok == true {
+		result := value + 10
+		fmt.Println("Успешная распаковка! Результат + 10 =", result)
+	} else {
+		fmt.Println("Ошибка: внутри коробки лежит не целое число!")
 	}
 }
