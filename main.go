@@ -1,20 +1,15 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 )
 
 func main() {
 
-	username := "Vanya"
+	fmt.Println("Действие 1: Подключение к кошельку")
 
-	baseErr := errors.New("limit exceeded")
+	defer fmt.Println("Действие 3: Безопасное отключение от кошелька")
 
-	advancedErr := fmt.Errorf("user %s financial error: %w", username, baseErr)
-
-	if advancedErr != nil {
-		fmt.Println(advancedErr)
-	}
+	fmt.Println("Действие 2: Проведение транзакции...")
 
 }
