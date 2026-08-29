@@ -2,19 +2,18 @@ package main
 
 import (
 	"fmt"
+	"time"
 )
 
 func main() {
 
-	defer func() {
-		// 🟢 Пытаемся поймать панику
-		if r := recover(); r != nil {
-			fmt.Println("Авария успешно ликвидирована. Причина паники:", r)
-		}
-	}()
+	start := time.Now()
 
-	fmt.Println("Сервер запущен. Проверка безопасности...")
+	timestamp := time.Now().Unix()
 
-	panic("Обнаружена хакерская атака на ядро!")
+	fmt.Println("Сгенерирован Unix-Timestamp:", timestamp)
 
+	duration := time.Since(start)
+
+	fmt.Printf("Скорость генерации лога: %s\n", duration)
 }
