@@ -1,19 +1,19 @@
 package main
 
-import (
-	"fmt"
-	"time"
+import "fmt"
+
+const (
+	StatusPending = iota
+	StatusProcessing
+	StatusFailed
 )
 
 func main() {
 
-	start := time.Now()
+	fmt.Println(StatusPending)
 
-	timestamp := time.Now().Unix()
+	fmt.Println(StatusProcessing)
 
-	fmt.Println("Сгенерирован Unix-Timestamp:", timestamp)
+	fmt.Println(StatusFailed)
 
-	duration := time.Since(start)
-
-	fmt.Printf("Скорость генерации лога: %s\n", duration)
 }
