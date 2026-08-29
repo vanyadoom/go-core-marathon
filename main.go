@@ -1,19 +1,23 @@
 package main
 
-import "fmt"
-
-const (
-	StatusPending = iota
-	StatusProcessing
-	StatusFailed
+import (
+	"encoding/json"
+	"fmt"
 )
 
+type CryptoBalance struct {
+	Currency string  `json:"currency"`
+	Amount   float64 `json:"amount"`
+}
+
 func main() {
+	u := CryptoBalance{Currency: "BTC", Amount: 1.45}
 
-	fmt.Println(StatusPending)
+	jsonData, err := json.Marshal(u)
 
-	fmt.Println(StatusProcessing)
-
-	fmt.Println(StatusFailed)
-
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(string(jsonData))
+	}
 }
