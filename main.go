@@ -1,29 +1,20 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
+	"os"
 )
-
-type Asset struct {
-	Ticker string  `json:"ticker"`
-	Price  float64 `json:"price"`
-}
 
 func main() {
 
-	rawJSON := []byte(`{"ticker":"SOL","price":145.20}`)
+	os.Setenv("DB_PASSWORD", "aurora_secure_pass_2026")
 
-	var myAsset Asset
+	password := os.Getenv("DB_PASSWORD")
 
-	fmt.Printf("До распаковки: Тикер: %s, Цена: %.2f\n", myAsset.Ticker, myAsset.Price)
-
-	err := json.Unmarshal(rawJSON, &myAsset)
-
-	if err != nil {
-		fmt.Println(err)
+	if password == "" {
+		fmt.Println("Критическая ошибка: Пароль базы данных не найден в системе!")
 	} else {
-		fmt.Printf("После распаковки: Тикер: %s, Цена: %.2f\n", myAsset.Ticker, myAsset.Price)
+		fmt.Printf("Успешное подключение к БД! Используется секретный пароль: %s\n", password)
 	}
 
 }
