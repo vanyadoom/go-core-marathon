@@ -6,15 +6,18 @@ import (
 )
 
 func main() {
-
-	os.Setenv("DB_PASSWORD", "aurora_secure_pass_2026")
-
-	password := os.Getenv("DB_PASSWORD")
-
-	if password == "" {
-		fmt.Println("Критическая ошибка: Пароль базы данных не найден в системе!")
-	} else {
-		fmt.Printf("Успешное подключение к БД! Используется секретный пароль: %s\n", password)
+	if len(os.Args) <= 1 {
+		fmt.Println("Инструкция: Запустите программу с командой 'start' или 'stop'")
+		return
 	}
 
+	command := os.Args[1]
+	switch command {
+	case "start":
+		fmt.Println("Запуск бэкенд-системы Аврора...")
+	case "stop":
+		fmt.Println("Сервер успешно остановлен.")
+	default:
+		fmt.Println("Неизвестная команда!")
+	}
 }
