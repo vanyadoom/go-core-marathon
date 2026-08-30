@@ -5,19 +5,25 @@ import (
 	"fmt"
 )
 
-type CryptoBalance struct {
-	Currency string  `json:"currency"`
-	Amount   float64 `json:"amount"`
+type Asset struct {
+	Ticker string  `json:"ticker"`
+	Price  float64 `json:"price"`
 }
 
 func main() {
-	u := CryptoBalance{Currency: "BTC", Amount: 1.45}
 
-	jsonData, err := json.Marshal(u)
+	rawJSON := []byte(`{"ticker":"SOL","price":145.20}`)
+
+	var myAsset Asset
+
+	fmt.Printf("До распаковки: Тикер: %s, Цена: %.2f\n", myAsset.Ticker, myAsset.Price)
+
+	err := json.Unmarshal(rawJSON, &myAsset)
 
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		fmt.Println(string(jsonData))
+		fmt.Printf("После распаковки: Тикер: %s, Цена: %.2f\n", myAsset.Ticker, myAsset.Price)
 	}
+
 }
