@@ -2,20 +2,28 @@ package main
 
 import (
 	"fmt"
+	"sync"
 	"time"
 )
 
-func CountTransactions() {
-	for i := 1; i <= 3; i++ {
-		fmt.Printf("Фоновая транзакция №%d обработана\n", i)
+func ProcessPayment(wg *sync.WaitGroup) {
+	defer wg.Done()
+	fmt.Println("Горутина: Начинаю валидацию платежа...")
 
-		time.Sleep(100 * time.Millisecond)
-	}
+	time.Sleep(200 * time.Millisecond)
+
+	fmt.Println("Горутина: Платёж успешно зафиксирован!")
 }
 
 func main() {
-	go CountTransactions()
-	fmt.Println("Главный поток main: запуск фоновой работы...")
+	var wg sync.WaitGroup
+	wg.Add(1)
 
-	time.Sleep(500 * time.Millisecond)
+	go ProcessPayment(&wg)
+
+	fmt.Println("Главный поток main: горутина запущена, включаю режим ожидания...")
+
+	wg.Wait()
+
+	fmt.Println("Главный поток main: Все потоки завершились, закрываю сервер!")
 }
