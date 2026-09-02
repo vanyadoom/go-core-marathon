@@ -2,22 +2,20 @@ package main
 
 import (
 	"fmt"
-	"os"
+	"time"
 )
 
-func main() {
-	if len(os.Args) <= 1 {
-		fmt.Println("Инструкция: Запустите программу с командой 'start' или 'stop'")
-		return
-	}
+func CountTransactions() {
+	for i := 1; i <= 3; i++ {
+		fmt.Printf("Фоновая транзакция №%d обработана\n", i)
 
-	command := os.Args[1]
-	switch command {
-	case "start":
-		fmt.Println("Запуск бэкенд-системы Аврора...")
-	case "stop":
-		fmt.Println("Сервер успешно остановлен.")
-	default:
-		fmt.Println("Неизвестная команда!")
+		time.Sleep(100 * time.Millisecond)
 	}
+}
+
+func main() {
+	go CountTransactions()
+	fmt.Println("Главный поток main: запуск фоновой работы...")
+
+	time.Sleep(500 * time.Millisecond)
 }
