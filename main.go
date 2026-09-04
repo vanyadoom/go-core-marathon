@@ -2,28 +2,27 @@ package main
 
 import (
 	"fmt"
-	"sync"
 	"time"
 )
 
-func ProcessPayment(wg *sync.WaitGroup) {
-	defer wg.Done()
-	fmt.Println("Горутина: Начинаю валидацию платежа...")
+func GeneralSignal(ch chan string) {
 
-	time.Sleep(200 * time.Millisecond)
+	time.Sleep(300 * time.Millisecond)
 
-	fmt.Println("Горутина: Платёж успешно зафиксирован!")
+	ch <- "BTC"
+
 }
 
 func main() {
-	var wg sync.WaitGroup
-	wg.Add(1)
 
-	go ProcessPayment(&wg)
+	signalChan := make(chan string)
 
-	fmt.Println("Главный поток main: горутина запущена, включаю режим ожидания...")
+	go GeneralSignal(signalChan)
 
-	wg.Wait()
+	fmt.Println("Главный поток main: Робот ИИ запущен, жду данные из канала...", signalChan)
 
-	fmt.Println("Главный поток main: Все потоки завершились, закрываю сервер!")
+	token := <-signalChan
+
+	fmt.Printf("Главный поток main: Сигнал получен! Срочно покупаем актив: %s\n", token)
+
 }
