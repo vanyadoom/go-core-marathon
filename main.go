@@ -2,27 +2,23 @@ package main
 
 import (
 	"fmt"
-	"time"
 )
-
-func GeneralSignal(ch chan string) {
-
-	time.Sleep(300 * time.Millisecond)
-
-	ch <- "BTC"
-
-}
 
 func main() {
 
-	signalChan := make(chan string)
+	queue := make(chan string, 2)
 
-	go GeneralSignal(signalChan)
+	queue <- "TX_MARKET"
+	queue <- "TX_LIMIT"
 
-	fmt.Println("Главный поток main: Робот ИИ запущен, жду данные из канала...", signalChan)
+	fmt.Printf("Очередь заполнена! Вместимость: %d, Текущая длина: %d\n", cap(queue), len(queue))
 
-	token := <-signalChan
+	tx1 := <-queue
 
-	fmt.Printf("Главный поток main: Сигнал получен! Срочно покупаем актив: %s\n", token)
+	fmt.Println("Обработана транзакция:", tx1)
+
+	tx2 := <-queue
+
+	fmt.Println("Обработана транзакция:", tx2)
 
 }
