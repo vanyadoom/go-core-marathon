@@ -2,23 +2,22 @@ package main
 
 import (
 	"fmt"
+	"time"
 )
 
+func StreamTransation(ch chan string) {
+	for i := 1; i <= 3; i++ {
+		ch <- fmt.Sprintf("TX_ID_%d", i)
+		time.Sleep(100 * time.Millisecond)
+	}
+	close(ch)
+}
+
 func main() {
-
-	queue := make(chan string, 2)
-
-	queue <- "TX_MARKET"
-	queue <- "TX_LIMIT"
-
-	fmt.Printf("Очередь заполнена! Вместимость: %d, Текущая длина: %d\n", cap(queue), len(queue))
-
-	tx1 := <-queue
-
-	fmt.Println("Обработана транзакция:", tx1)
-
-	tx2 := <-queue
-
-	fmt.Println("Обработана транзакция:", tx2)
-
+	txChan := make(chan string)
+	go StreamTransation(txChan)
+	for tx := range txChan {
+		fmt.Println("Главный поток принял из канала:", tx)
+	}
+	fmt.Println("Поток main: Канал успешно закрылся, конвейер завершён!")
 }
