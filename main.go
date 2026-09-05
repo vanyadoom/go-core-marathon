@@ -5,19 +5,28 @@ import (
 	"time"
 )
 
-func StreamTransation(ch chan string) {
-	for i := 1; i <= 3; i++ {
-		ch <- fmt.Sprintf("TX_ID_%d", i)
-		time.Sleep(100 * time.Millisecond)
-	}
-	close(ch)
+func FetchBinance(ch chan string) {
+	time.Sleep(200 * time.Millisecond)
+	ch <- "Binance: BTC = 64500 USD"
+}
+func FetchBybit(ch chan string) {
+	time.Sleep(50 * time.Millisecond)
+	ch <- "Bybit: BTC = 64480 USD"
 }
 
 func main() {
-	txChan := make(chan string)
-	go StreamTransation(txChan)
-	for tx := range txChan {
-		fmt.Println("Главный поток принял из канала:", tx)
+	binanceChan := make(chan string)
+	bybitChan := make(chan string)
+
+	go FetchBinance(binanceChan)
+	go FetchBybit(bybitChan)
+
+	fmt.Println("Поток main: Запускаю опрос бирж наперегонки...")
+
+	select {
+	case res := <-binanceChan:
+		fmt.Println("Победил агрегатор!", res)
+	case res := <-bybitChan:
+		fmt.Println("Победил агрегатор!", res)
 	}
-	fmt.Println("Поток main: Канал успешно закрылся, конвейер завершён!")
 }
