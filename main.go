@@ -2,23 +2,19 @@ package main
 
 import (
 	"fmt"
-	"time"
 )
 
-func FetchSlowBybit(ch chan string) {
-	time.Sleep(500 * time.Millisecond)
-	ch <- "Bybit: Успешный ответ!"
+func SendSingleTx(ch chan string) {
+	ch <- "TX_VIP_777"
+	close(ch)
 }
 
 func main() {
-	bybitChan := make(chan string)
-	go FetchSlowBybit(bybitChan)
-	fmt.Println("Поток main: Запрашиваю данные у Bybit со встроенной защитой 100 мс...")
+	cryptoChan := make(chan string)
+	go SendSingleTx(cryptoChan)
+	tx1, ok1 := <-cryptoChan
+	fmt.Printf("Чтение 1: Значение: %s, Открыт: %t\n", tx1, ok1)
 
-	select {
-	case res := <-bybitChan:
-		fmt.Println("Успех!", res)
-	case <-time.After(100 * time.Millisecond):
-		fmt.Println("❌ Тайм-аут! Биржа Bybit зависла, сбрасываем соединение.")
-	}
+	tx2, ok2 := <-cryptoChan
+	fmt.Printf("Чтение 2: Значение: %s, Открыт: %t\n", tx2, ok2)
 }
