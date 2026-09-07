@@ -2,27 +2,32 @@ package main
 
 import (
 	"fmt"
-	"sync"
+	"time"
 )
 
-var balance int
-var mu sync.Mutex
-var wg sync.WaitGroup
-
-func Deposit() {
-	defer wg.Done()
-	mu.Lock()
-	defer mu.Unlock()
-	balance++
+func CryptoWorker(id int, jobs <-chan int, results chan<- int) {
+	for idTx := range jobs {
+		fmt.Printf("Воркер №%d: Начал обработку транзакции TX_ID_%d\n", id, idTx)
+		time.Sleep(50 * time.Millisecond)
+		results <- idTx * 10
+	}
 }
 
 func main() {
-	for i := 0; i < 1000; i++ {
-		wg.Add(1)
-		go Deposit()
+	jobs := make(chan int, 5)
+	results := make(chan int, 5)
+
+	for i := 1; i <= 3; i++ {
+		go CryptoWorker(i, jobs, results)
 	}
 
-	wg.Wait()
-	fmt.Println("Юбилейный баланс биржи равен:", balance)
+	for j := 1; j <= 5; j++ {
+		jobs <- j
+	}
+	close(jobs)
 
+	for m := 1; m <= 5; m++ {
+		res := <-results
+		fmt.Println("Главный поток принял результат комиссии:", res)
+	}
 }
