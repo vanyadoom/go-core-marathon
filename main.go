@@ -2,32 +2,46 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"sync"
 )
 
-func CryptoWorker(id int, jobs <-chan int, results chan<- int) {
-	for idTx := range jobs {
-		fmt.Printf("Воркер №%d: Начал обработку транзакции TX_ID_%d\n", id, idTx)
-		time.Sleep(50 * time.Millisecond)
-		results <- idTx * 10
+func GenerateQuotes(name string, ch chan string) {
+	for i := 1; i <= 2; i++ {
+		ch <- fmt.Sprintf("%s: BTC = 64000", name)
 	}
+	close(ch)
+}
+
+func FanIn(channels ...chan string) <-chan string {
+	out := make(chan string, 10)
+	var wg sync.WaitGroup
+
+	output := func(c <-chan string) {
+		for val := range c {
+			out <- val
+		}
+		wg.Done()
+	}
+	for _, c := range channels {
+		wg.Add(1)
+		go output(c)
+	}
+	go func() {
+		wg.Wait()
+		close(out)
+	}()
+	return out
 }
 
 func main() {
-	jobs := make(chan int, 5)
-	results := make(chan int, 5)
+	ch1 := make(chan string)
+	ch2 := make(chan string)
 
-	for i := 1; i <= 3; i++ {
-		go CryptoWorker(i, jobs, results)
-	}
+	go GenerateQuotes("Binance", ch1)
+	go GenerateQuotes("Bybit", ch2)
 
-	for j := 1; j <= 5; j++ {
-		jobs <- j
-	}
-	close(jobs)
-
-	for m := 1; m <= 5; m++ {
-		res := <-results
-		fmt.Println("Главный поток принял результат комиссии:", res)
+	merged := FanIn(ch1, ch2)
+	for msg := range merged {
+		fmt.Println("Агрегатор поймал:", msg)
 	}
 }
