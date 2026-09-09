@@ -1,47 +1,48 @@
 package main
 
-import (
-	"fmt"
-	"sync"
-)
+import "fmt"
 
-func GenerateQuotes(name string, ch chan string) {
-	for i := 1; i <= 2; i++ {
-		ch <- fmt.Sprintf("%s: BTC = 64000", name)
-	}
-	close(ch)
+func Generator() <-chan int {
+	out := make(chan int)
+	go func() {
+		for i := 1; i <= 3; i++ {
+			out <- i
+		}
+		close(out)
+	}()
+	return out
 }
 
-func FanIn(channels ...chan string) <-chan string {
-	out := make(chan string, 10)
-	var wg sync.WaitGroup
-
-	output := func(c <-chan string) {
-		for val := range c {
-			out <- val
+func Validator(in <-chan int) <-chan int { // 🟢 ИСПРАВЛЕНО: Задали возвращаемый тип
+	out := make(chan int)
+	go func() { // 🟢 ИСПРАВЛЕНО: Упаковали в фоновую горутину
+		for n := range in {
+			if n%2 == 0 {
+				out <- n
+			}
 		}
-		wg.Done()
-	}
-	for _, c := range channels {
-		wg.Add(1)
-		go output(c)
-	}
+		close(out) // 🟢 ИСПРАВЛЕНО: Каскадно закрываем следующую трубу
+	}()
+	return out
+}
+
+func Calculator(in <-chan int) <-chan int {
+	out := make(chan int)
 	go func() {
-		wg.Wait()
+		for n := range in {
+			out <- n * 100
+		}
 		close(out)
 	}()
 	return out
 }
 
 func main() {
-	ch1 := make(chan string)
-	ch2 := make(chan string)
+	stage1 := Generator()
+	stage2 := Validator(stage1)
+	stage3 := Calculator(stage2)
 
-	go GenerateQuotes("Binance", ch1)
-	go GenerateQuotes("Bybit", ch2)
-
-	merged := FanIn(ch1, ch2)
-	for msg := range merged {
-		fmt.Println("Агрегатор поймал:", msg)
+	for result := range stage3 {
+		fmt.Println("Конвейер выдал чистый платёж:", result)
 	}
 }
