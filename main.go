@@ -1,48 +1,30 @@
 package main
 
-import "fmt"
+import (
+	"context"
+	"fmt"
+	"time"
+)
 
-func Generator() <-chan int {
-	out := make(chan int)
-	go func() {
-		for i := 1; i <= 3; i++ {
-			out <- i
-		}
-		close(out)
-	}()
-	return out
-}
+func DownloadMovie(ctx context.Context, title string) {
+	for {
+		select {
+		case <-ctx.Done():
+			fmt.Printf("🛑 Скачивание фильма '%s' прервано: %v\n", title, ctx.Err())
+			return
 
-func Validator(in <-chan int) <-chan int { // 🟢 ИСПРАВЛЕНО: Задали возвращаемый тип
-	out := make(chan int)
-	go func() { // 🟢 ИСПРАВЛЕНО: Упаковали в фоновую горутину
-		for n := range in {
-			if n%2 == 0 {
-				out <- n
-			}
+		default:
+			fmt.Println("Качаю следующий гигабайт...")
+			time.Sleep(20 * time.Millisecond)
 		}
-		close(out) // 🟢 ИСПРАВЛЕНО: Каскадно закрываем следующую трубу
-	}()
-	return out
-}
-
-func Calculator(in <-chan int) <-chan int {
-	out := make(chan int)
-	go func() {
-		for n := range in {
-			out <- n * 100
-		}
-		close(out)
-	}()
-	return out
+	}
 }
 
 func main() {
-	stage1 := Generator()
-	stage2 := Validator(stage1)
-	stage3 := Calculator(stage2)
-
-	for result := range stage3 {
-		fmt.Println("Конвейер выдал чистый платёж:", result)
-	}
+	ctxBackground := context.Background()
+	ctx, cancel := context.WithCancel(ctxBackground)
+	go DownloadMovie(ctx, "Интерстеллар")
+	time.Sleep(50 * time.Millisecond)
+	cancel()
+	time.Sleep(50 * time.Millisecond)
 }
