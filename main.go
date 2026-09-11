@@ -6,25 +6,20 @@ import (
 	"time"
 )
 
-func DownloadMovie(ctx context.Context, title string) {
-	for {
-		select {
-		case <-ctx.Done():
-			fmt.Printf("🛑 Скачивание фильма '%s' прервано: %v\n", title, ctx.Err())
-			return
-
-		default:
-			fmt.Println("Качаю следующий гигабайт...")
-			time.Sleep(20 * time.Millisecond)
-		}
+func FetchMovieFromDB(ctx context.Context, title string) {
+	time.Sleep(100 * time.Millisecond)
+	select {
+	case <-ctx.Done():
+		fmt.Printf("❌ Запрос отменён фильтром безопасности: %v\n", ctx.Err())
+		return
+	default:
+		fmt.Printf("✅ Успешно получили данные фильма: %s\n", title)
 	}
 }
 
 func main() {
-	ctxBackground := context.Background()
-	ctx, cancel := context.WithCancel(ctxBackground)
-	go DownloadMovie(ctx, "Интерстеллар")
-	time.Sleep(50 * time.Millisecond)
-	cancel()
-	time.Sleep(50 * time.Millisecond)
+	ctx, cancel := context.WithTimeout(context.Background(), 50*time.Millisecond)
+	defer cancel()
+	FetchMovieFromDB(ctx, "Бэтмен")
+	fmt.Println("Работа главного потока завершена.")
 }
