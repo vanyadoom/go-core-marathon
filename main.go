@@ -1,24 +1,21 @@
 package main
 
 import (
-	"context"
 	"fmt"
+	"net/http"
 )
 
-type congigKey string
+func HomeHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "Добро пожаловать в Go Core Кинотеатр!")
+}
 
-const reqIDkey congigKey = "x-request-id"
-
-func GetMovieData(ctx context.Context, title string) {
-	rawID := ctx.Value(reqIDkey)
-	idStr, ok := rawID.(string)
-	if !ok {
-		idStr = "UNKNOWN_ID"
-	}
-	fmt.Printf("[ID: %s] Успешно прочитан фильм: %s\n", idStr, title)
+func MoviesHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "1. Криминальное чтиво\n2. Бойцовский клуб\n3. Интерстеллар")
 }
 
 func main() {
-	ctx := context.WithValue(context.Background(), reqIDkey, "REQ-999-ONLINE")
-	GetMovieData(ctx, "Интерстеллар")
+	http.HandleFunc("/", HomeHandler)
+	http.HandleFunc("/movies", MoviesHandler)
+	fmt.Println("🚀 Киносервер запущен на порту :8080...")
+	http.ListenAndServe(":8080", nil)
 }
