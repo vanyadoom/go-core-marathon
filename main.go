@@ -1,21 +1,28 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
 )
 
-func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Добро пожаловать в Go Core Кинотеатр!")
+type Movie struct {
+	Title    string  `json:"title"`
+	Director string  `json:"director"`
+	Rating   float64 `json:"rating"`
 }
 
 func MoviesHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "1. Криминальное чтиво\n2. Бойцовский клуб\n3. Интерстеллар")
+	w.Header().Set("Content-Type", "application/json")
+	movies := []Movie{
+		{Title: "Интерстеллар", Director: "Кристофер Нолан", Rating: 8.6},
+		{Title: "Криминальное чтиво", Director: "Квентин Тарантино", Rating: 8.9},
+		{Title: "Бойцовский клуб", Director: "Дэвид Финчер", Rating: 8.7},
+	}
+
+	json.NewEncoder(w).Encode(movies)
 }
 
 func main() {
-	http.HandleFunc("/", HomeHandler)
 	http.HandleFunc("/movies", MoviesHandler)
-	fmt.Println("🚀 Киносервер запущен на порту :8080...")
 	http.ListenAndServe(":8080", nil)
 }
